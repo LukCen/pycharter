@@ -1,0 +1,146 @@
+import matplotlib.pyplot as mpl
+import tkinter
+import tkinter.ttk as ttk
+
+# plotLineChart(names, values, "Test chart")
+
+# def add_to_list():
+#   text = entry.get()
+#   if text:
+#     text_list.insert(tkinter.END, text)
+#     entry.delete(0,tkinter.END)
+
+# end def
+
+# main window
+# root = tkinter.Tk() 
+# root.title("PyCharter")
+# root.minsize(800, 600)
+
+# root.columnconfigure(0, weight=1)
+# root.rowconfigure(0, weight=1)
+
+# root.configure(bg="#333333", padx=20, pady=20)
+
+# frame = tkinter.Frame(root)
+# frame.grid(row=0, column=0, sticky="nsew")
+
+# frame.columnconfigure(0, weight=1)
+# frame.rowconfigure(1, weight=1)
+# frame.configure(border=10)
+
+
+# entry = tkinter.Entry(frame)
+# entry.grid(row=0, column=0, sticky="ew")
+
+# entry.bind("<Return>",lambda event: add_to_list())
+
+# entry_btn = tkinter.Button(frame, text="Entry Button", command=add_to_list)
+# entry_btn.grid(row=0,column=1)
+
+# text_list = tkinter.Listbox(frame)
+# text_list.grid(row=1,columnspan=2, sticky="nsew")
+# # 
+# frame2 = tkinter.Frame(root)
+# frame2.grid(row=0, column=1, sticky="nsew")
+
+# frame2.columnconfigure(0, weight=1)
+# frame2.rowconfigure(1, weight=1)
+# frame2.configure(border=10)
+
+
+# entry = tkinter.Entry(frame2)
+# entry.grid(row=0, column=0, sticky="ew")
+
+# entry.bind("<Return>",lambda event: add_to_list())
+
+# entry_btn = tkinter.Button(frame2, text="Entry Button", command=add_to_list)
+# entry_btn.grid(row=0,column=1)
+
+# text_list = tkinter.Listbox(frame2)
+# text_list.grid(row=1,columnspan=2, sticky="nsew")
+
+
+
+class DataRow():
+  def __init__(self, master,  frame_col, frame_row):
+    
+    self.master = master
+    self.frame_col= frame_col
+    self.frame_row = frame_row
+    style = ttk.Style()
+    style.configure("Custom.TFrame", background="#ff0022")
+    self.frame = ttk.Frame(master)
+
+    self.new_label_x = ttk.Label(self.frame, text="X axis (string)")
+    self.new_label_x.configure(padding=10)
+
+    self.new_label_y = ttk.Label(self.frame, text="Y axis (number)")
+    self.new_label_y.configure(padding=10)
+
+    self.new_entry_x = ttk.Entry(self.frame, width=60)
+    self.new_entry_y = ttk.Entry(self.frame, width=60)
+
+
+    self.new_button = ttk.Button(self.frame,text="Add to list", command=self.add_to_list)
+
+    self.new_entry_x.grid(row=0,column=1, sticky='ew')
+    self.new_entry_y.grid(row=1, column=1, sticky='ew')
+
+    self.new_label_x.grid(row=0,column=0)
+    self.new_label_y.grid(row=1, column=0)
+    self.new_button.grid(row=0, column=2, sticky='e')
+
+    self.new_button.rowconfigure(0, weight=2)
+
+    self.new_entry_x.columnconfigure(1, weight=1)
+
+    self.frame.grid(row=self.frame_row, column=self.frame_col, padx=20, pady=5, sticky='ew')
+    
+  def add_to_list(self):
+    text_x = self.new_entry_x.get()
+    text_y = self.new_entry_y.get()
+    if text_x and text_y:
+      text_list.insert('', 'end',None, text=f'{text_x } : { text_y}')
+      items.update({text_x: text_y})
+
+        
+# key/value pairs to use for the chart making
+items = {}
+names = [items.keys()]
+values = [items.values()]
+
+
+def plotLineChart(axis_x, axis_y, title = "My Chart"):
+    mpl.plot(axis_x, axis_y)
+    mpl.title(title)
+    mpl.show()
+
+
+root = tkinter.Tk()
+root.configure(bg="#999999")
+
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=0)
+root.rowconfigure(1, weight=1)
+
+root.minsize(800,600)
+root.title("PyCharter")
+
+# frame containing the inputs
+frame1 = ttk.Frame(root)
+frame1.grid(row=0,column=0,sticky="nsew")
+frame1.columnconfigure(0, weight=1)
+
+# textlist - displays added k/v pairs
+text_list = ttk.Treeview(root)
+text_list.grid(rows=1,column=0,sticky='nsew')
+
+
+chart_button = tkinter.Button(root,text="Chart", command=lambda : plotLineChart(*names, *values), background="#333333", foreground="#f5f5f5", font="25", padx=20, pady=10)
+chart_button.grid(row=3, columnspan=3, sticky='nsew')
+x_row = DataRow(frame1,0,0)
+
+
+root.mainloop()
+
