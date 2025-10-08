@@ -44,6 +44,9 @@ class DataRow():
     self.new_entry_x.columnconfigure(1, weight=1)
 
     self.frame.grid(row=self.frame_row, column=self.frame_col, padx=20, pady=5, sticky='ew')
+
+    self.list_container = ttk.Frame(self.frame)
+    self.list_container.grid(row=2, column=0, columnspan=3, sticky='ew')
     
   def add_to_list(self):
     text_x = self.new_entry_x.get()
@@ -52,15 +55,14 @@ class DataRow():
       # text_list.insert('', 'end',None, text=f'{text_x } : { text_y}')
       items.update({text_x: text_y})
 
-      list_item_frame = ttk.Frame(self.frame)
+      list_item_frame = ttk.Frame(self.list_container)
 
       list_item_key = ttk.Label(list_item_frame, text=text_x)
       list_item_value = ttk.Label(list_item_frame, text=text_y)
 
-      list_item_key.pack(anchor="w")
-      list_item_value.pack(anchor="e")
-      list_item_frame.grid(row=2,column=0, sticky='ew')
-      list_item_frame.rowconfigure(2, weight=2)
+      list_item_key.pack(side='left')
+      list_item_value.pack(side='right')
+      list_item_frame.pack(fill='x', pady=2)
 
         
 # key/value pairs to use for the chart making
