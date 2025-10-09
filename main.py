@@ -5,9 +5,8 @@ import tkinter.ttk as ttk
 # class for creating the top frame for data inputs
 
 class DataRow():
-  def __init__(self, master,  frame_col, frame_row):
+  def __init__(self, master, frame_col, frame_row):
     
-
     self.master = master
     self.frame_col= frame_col
     self.frame_row = frame_row
@@ -15,6 +14,11 @@ class DataRow():
     # ogranizational container
     self.frame = ttk.Frame(master)
 
+    # chart title
+    self.chart_title = ttk.Entry(self.frame)
+    self.chart_title.grid(row=0, column=1)
+    self.chart_title_label = ttk.Label(self.frame, text="Chart title")
+    self.chart_title_label.grid(row=0,column=0)
 
     # labels for inputs plus inputs
 
@@ -31,22 +35,22 @@ class DataRow():
 
     self.new_button = ttk.Button(self.frame, text="Add to list", command=self.add_to_list)
 
-    self.new_entry_x.grid(row=0, column=1, sticky='ew')
-    self.new_entry_y.grid(row=1, column=1, sticky='ew')
+    self.new_entry_x.grid(row=1, column=1, sticky='ew')
+    self.new_entry_y.grid(row=2, column=1, sticky='ew')
 
-    self.new_label_x.grid(row=0, column=0)
-    self.new_label_y.grid(row=1, column=0)
+    self.new_label_x.grid(row=1, column=0)
+    self.new_label_y.grid(row=2, column=0)
 
-    self.new_button.grid(row=0, column=2, sticky='nse')
+    self.new_button.grid(row=1, column=2, sticky='nse')
 
-    self.new_button.rowconfigure(0, weight=2)
+    self.new_button.rowconfigure(1, weight=2)
 
     self.new_entry_x.columnconfigure(1, weight=1)
 
     self.frame.grid(row=self.frame_row, column=self.frame_col, padx=20, pady=5, sticky='ew')
 
     self.list_container = ttk.Frame(self.frame)
-    self.list_container.grid(row=2, column=0, columnspan=3, sticky='ew')
+    self.list_container.grid(row=3, column=0, columnspan=3, sticky='ew')
     
   def add_to_list(self):
     text_x = self.new_entry_x.get()
@@ -68,19 +72,17 @@ class DataRow():
 # key/value pairs to use for the chart making
 items = {}
 
-def plotLineChart(title = "My Chart"):
-    
+def plotLineChart(DataRow):
     sorted_items = sorted(items.items(), key=lambda x: int(x[1]))
     names = [item[0] for item in sorted_items]
     values = [int(item[1]) for item in sorted_items]
 
-
     mpl.bar(names, values)
-    mpl.title(title)
+    mpl.title(DataRow.chart_title.get() or "My Chart")
     mpl.show()
 
-
 root = tkinter.Tk()
+
 root.configure(bg="#999999")
 
 root.columnconfigure(0, weight=1)
@@ -95,14 +97,10 @@ frame1 = ttk.Frame(root)
 frame1.grid(row=0,column=0,sticky="nsew")
 frame1.columnconfigure(0, weight=1)
 
-# textlist - displays added k/v pairs
-# text_list = ttk.Treeview(root)
-# text_list.grid(rows=1,column=0,sticky='nsew')
 
-
-chart_button = tkinter.Button(root,text="Chart", command=plotLineChart, background="#333333", foreground="#f5f5f5", font="25", padx=20, pady=10)
+x_row = DataRow(frame1,0,2)
+chart_button = tkinter.Button(root,text="Chart",command=lambda : plotLineChart(x_row), background="#333333", foreground="#f5f5f5", font="25", padx=20, pady=10)
 chart_button.grid(row=3, columnspan=3, sticky='nsew')
-x_row = DataRow(frame1,0,0)
 
 
 root.mainloop()
